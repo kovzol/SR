@@ -1,6 +1,6 @@
-# Issue "make" to create a Sword module, and "make SRGNT.zip" to create it as a .zip bundle.
+# Issue "make" to create a Sword module, and "make StatResGNT.zip" to create it as a .zip bundle.
 
-ZTEXT_DIR=modules/texts/ztext/srgnt
+ZTEXT_DIR=modules/texts/ztext/statresgnt
 NT_BZZ=$(ZTEXT_DIR)/nt.bzz
 NT_BZV=$(ZTEXT_DIR)/nt.bzv
 NT_BZS=$(ZTEXT_DIR)/nt.bzs
@@ -13,7 +13,7 @@ SR_osis.xml: SR.txt txt2osis.py
 $(NT): SR_osis.xml
 	mkdir -p $(ZTEXT_DIR)
 	osis2mod $(ZTEXT_DIR) $< -z z -v LXX
-	@echo "Copy $(ZTEXT_DIR) and mods.d/srgnt.conf to your <SWORD_DIR> to finalize your installation."
+	@echo "Copy $(ZTEXT_DIR) and mods.d/statresgnt.conf to your <SWORD_DIR> to finalize your installation."
 
-SRGNT.zip: $(NT) mods.d/srgnt.conf
+StatResGNT.zip: $(NT) mods.d/statresgnt.conf
 	zip -9r $@ $^
