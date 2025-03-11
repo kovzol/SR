@@ -17,3 +17,6 @@ $(NT): SR_osis.xml
 
 StatResGNT.zip: $(NT) mods.d/statresgnt.conf
 	zip -9r $@ $^
+
+clean:
+	rm -f $(NT) SR_osis.xml

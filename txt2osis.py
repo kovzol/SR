@@ -61,7 +61,7 @@ def osis_tail():
 
 print(osis_head())
 
-sr_txt = pd.read_csv('SR.tsv', sep='\t', skiprows=4)
+sr_txt = pd.read_csv('SR.tsv', sep='\t', skiprows=0)
 book_old = ""
 book_chapter_old = ""
 book_chapter_verse_old = ""
