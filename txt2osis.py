@@ -40,11 +40,11 @@ def osis_head():
  xmlns:osis="http://www.bibletechnologies.net/2003/OSIS/namespace"
  xsi:schemaLocation="http://www.bibletechnologies.net/2003/OSIS/namespace https://www.crosswire.org/osis/osisCore.2.1.1.xsd">
 
- <osisText osisIDWork="SRGNT" osisRefWork="Bible" xml:lang="grc" canonical="true">
+ <osisText osisIDWork="StatResGNT" osisRefWork="Bible" xml:lang="grc" canonical="true">
   <header>
-   <work osisWork="SRGNT">
-    <title>Bunning Heuristic Prototype Greek New Testament</title>
-    <identifier type="OSIS">Bible.SRGNT</identifier>
+   <work osisWork="StatResGNT">
+    <title>Statistical Restoration Greek New Testament</title>
+    <identifier type="OSIS">Bible.StatResGNT</identifier>
     <refSystem>Bible.Calvin</refSystem>
    </work>
    <work osisWork="strong">
