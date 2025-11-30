@@ -50,6 +50,9 @@ def osis_head():
    <work osisWork="strong">
     <refSystem>Dict.Strongs</refSystem>
    </work>
+   <work osisWork="packard">
+    <refSystem>Dict.Packar</refSystem>
+   </work>
   </header>
 """
 
@@ -71,6 +74,7 @@ for word in sr_txt.itertuples():
     word_code = str(word[1])
     word_rawstring = str(word[2])
     # word_rawstring = str(word[3])
+    morph = str(word[7])
     strong = word[5]
     if (type(strong) == int or type(strong) == float) and not math.isnan(strong):
         strong = int(strong)
@@ -108,10 +112,22 @@ for word in sr_txt.itertuples():
     book_chapter_verse_formatted = book_chapter_formatted + "." + str(int(verse))
     if verse_rawstring != "":
         verse_rawstring += " "
-    if strong == "":
+
+    if word_rawstring.startswith("¶"):
+        word_rawstring = word_rawstring[1:]
+        verse_rawstring += "<milestone type=\"x-p\" marker=\"¶\"/>"
+    if word_rawstring.startswith("˚"):
+        word_rawstring = "<divineName>" + word_rawstring[1:] + "</divineName>"
+
+    w_tag = "" # a w-tag (by default, there is no w-tag)
+    if strong != "":
+        w_tag += f" lemma=\"strong:G{strong}\""
+    if morph != "":
+        w_tag += f" morph=\"packard:{morph}\""
+    if w_tag == "":
         verse_rawstring += word_rawstring
     else:
-        verse_rawstring += f"<w lemma=\"strong:G{strong}\">{word_rawstring}</w>"
+        verse_rawstring += f"<w{w_tag}>{word_rawstring}</w>"
     book_chapter_verse_old = book_chapter_verse
     book_chapter_old = book_chapter
     book_old = book

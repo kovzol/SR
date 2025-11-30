@@ -12,7 +12,7 @@ SR_osis.xml: SR.txt txt2osis.py
 	python3 txt2osis.py > $@
 $(NT): SR_osis.xml
 	mkdir -p $(ZTEXT_DIR)
-	osis2mod $(ZTEXT_DIR) $< -z z -v LXX
+	osis2mod $(ZTEXT_DIR) $< -z z -v KJV
 	@echo "Copy $(ZTEXT_DIR) and mods.d/statresgnt.conf to your <SWORD_DIR> to finalize your installation."
 
 StatResGNT.zip: $(NT) mods.d/statresgnt.conf
