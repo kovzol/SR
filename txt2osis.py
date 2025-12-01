@@ -70,10 +70,14 @@ book_chapter_old = ""
 book_chapter_verse_old = ""
 verse_rawstring = ""
 verses = 0
+qm = 0 # quotation marks
+ap = 0 # apostrophes
+
 for word in sr_txt.itertuples():
     word_code = str(word[1])
     word_rawstring = str(word[2])
     # word_rawstring = str(word[3])
+
     morph = str(word[7])
     strong = word[5]
     if (type(strong) == int or type(strong) == float) and not math.isnan(strong):
@@ -96,6 +100,7 @@ for word in sr_txt.itertuples():
         verses += 1
         # output the old verse
         print(f"    <verse osisID=\"{book_chapter_verse_formatted}\">{verse_rawstring}</verse>")
+        # print(f"    <comment qm=\"{qm}\" ap=\"{ap}\"/>") # for debugging
         verse_rawstring = "" # start with a new verse
     if book_chapter != book_chapter_old:
         if verses > 0: # a new chapter has been started
@@ -103,6 +108,10 @@ for word in sr_txt.itertuples():
     if book != book_old:
         if verses > 0: # a new book has been started
             print("  </div>")
+        if qm != 0:
+            raise ValueError("quotation mark is not closed in book")
+        if ap != 0:
+            raise ValueError("apostrophe is not closed in book")
     if book != book_old:
         # output the current book name
         print(f"  <div osisID=\"{book_formatted}\" type=\"book\">")
@@ -113,10 +122,24 @@ for word in sr_txt.itertuples():
     if verse_rawstring != "":
         verse_rawstring += " "
 
+    # maintain double and single quote checkers...
+    qm += word_rawstring.count("“")
+    qm -= word_rawstring.count("”")
+    ap += word_rawstring.count("‘")
+    ap -= word_rawstring.count("’")
+    if qm - ap < 0:
+        raise ValueError("too many apostrophes compared to quotation marks")
+    if qm - ap > 1:
+        raise ValueError("too many quotation marks compared to apostrophes")
+    if qm < 0:
+        raise ValueError("too many closing quotation marks")
+    if ap < 0:
+        raise ValueError("too many closing apostrophes")
+
     if word_rawstring.startswith("¶"):
         word_rawstring = word_rawstring[1:]
         verse_rawstring += "<milestone type=\"x-p\" marker=\"¶\"/>"
-    if word_rawstring.startswith("˚"):
+    if word_rawstring.startswith("˚"): # FIXME, it's not just about starting, because there may be a quotation mark at start, see Luke 6:46
         word_rawstring = "<divineName>" + word_rawstring[1:] + "</divineName>"
 
     w_tag = "" # a w-tag (by default, there is no w-tag)
