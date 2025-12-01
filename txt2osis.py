@@ -139,8 +139,14 @@ for word in sr_txt.itertuples():
     if word_rawstring.startswith("¶"):
         word_rawstring = word_rawstring[1:]
         verse_rawstring += "<milestone type=\"x-p\" marker=\"¶\"/>"
-    if word_rawstring.startswith("˚"): # FIXME, it's not just about starting, because there may be a quotation mark at start, see Luke 6:46
-        word_rawstring = "<divineName>" + word_rawstring[1:] + "</divineName>"
+    if "˚" in word_rawstring:
+        pos = word_rawstring.index("˚")
+        startstring = ""
+        if pos > 0:
+            startstring = word_rawstring[0:pos]
+        word_rawstring = startstring + "<divineName>" + word_rawstring[pos+1:] + "</divineName>"
+        # In fact, punctuation should not belong to the divine name,
+        # but this does not seem to be a problem in the rendering in SWORD at the moment.
 
     w_tag = "" # a w-tag (by default, there is no w-tag)
     if strong != "":
