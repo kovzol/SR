@@ -1,6 +1,7 @@
 # Create an OSIS XML file based on the .txt version of SR
 import pandas as pd
 import math
+import re
 
 numbertrans = {
     40: 'Matt',
@@ -144,9 +145,19 @@ for word in sr_txt.itertuples():
         startstring = ""
         if pos > 0:
             startstring = word_rawstring[0:pos]
-        word_rawstring = startstring + "<divineName>" + word_rawstring[pos+1:] + "</divineName>"
-        # In fact, punctuation should not belong to the divine name,
-        # but this does not seem to be a problem in the rendering in SWORD at the moment.
+        word_rawstring = word_rawstring[pos+1:]
+
+        # closing punctuation should not belong to the divine name...
+        endstring = ""
+        ends = ["\\!", "\\.", ",", "”", "’", ";", "·", "\\)"]
+        ends = re.compile("|".join(ends))
+        searchres = ends.search(word_rawstring)
+        if searchres != None:
+            ind = searchres.span()[0]
+            endstring = word_rawstring[ind:]
+            word_rawstring = word_rawstring[:ind]
+
+        word_rawstring = startstring + "<divineName>" + word_rawstring  + "</divineName>" + endstring
 
     w_tag = "" # a w-tag (by default, there is no w-tag)
     if strong != "":
