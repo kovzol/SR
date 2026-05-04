@@ -99,6 +99,9 @@ for word in sr_txt.itertuples():
     book_chapter_formatted = book_formatted + "." + str(int(chapter))
     if book_chapter_verse != book_chapter_verse_old and verse_rawstring != "": # a new verse has been started
         verses += 1
+        # do some final changes on the verse
+        # use Greek quotation marks
+        verse_rawstring = verse_rawstring.replace("“", "«").replace("”", "»").replace("‘", "“").replace("’", "”")
         # output the old verse
         print(f"    <verse osisID=\"{book_chapter_verse_formatted}\">{verse_rawstring}</verse>")
         # print(f"    <comment qm=\"{qm}\" ap=\"{ap}\"/>") # for debugging
